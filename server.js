@@ -1,6 +1,9 @@
 let express = require('express');
 let app = express();
 
+let BarToZipCore=require('./bar-to-zip-core');
+let ZipToBarCore=require('./zip-to-bar-core');
+
 app.use(express.static('./', {
   dotfiles: 'ignore',
   etag: true,
@@ -15,16 +18,23 @@ app.use(express.static('./', {
 
 app.get('/zipcode-to-barcode/:zipcode', function(req, res) {
   // TODO
-  let zipcode = req.params.zipcode;
-  res.send(zipcode);
+  let zipCode = req.params.zipcode;
+  let zipToBarCore =new ZipToBarCore();
+  let  result =zipToBarCore.do(zipCode);
+  //console.log(result);
+  res.send(result);
+
 });
 
 app.get('/barcode-to-zipcode/:barcode', function(req, res) {
   // TODO
-  let barcode = req.params.barcode;
-  res.send(barcode);
+  let barCode = req.params.barcode;
+  let barToZipCore =new BarToZipCore();
+  let  result =barToZipCore.do(barCode);
+ // console.log(result);
+  res.send(result);
 });
 
 app.listen(3000, function() {
   console.log('server is listening on 3000');
-})
+});
